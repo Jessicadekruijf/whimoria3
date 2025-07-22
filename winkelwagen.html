@@ -32,39 +32,50 @@
 
     <div id="checkout-form" class="mt-5">
       <h4>Jouw gegevens</h4>
-      <form id="orderForm" action="https://formsubmit.co/jessica.de.kruijf@hotmail.com" method="POST" onsubmit="return prepareOrder()">
-        <input type="hidden" name="_next" value="https://jessicadekruijf.github.io/whimoria3/bedankt.html" />
+      <form 
+        action="https://formsubmit.co/jessica.de.kruijf@hotmail.com" 
+        method="POST" 
+        onsubmit="return prepareOrder()">
+        
         <div class="row mb-3">
           <div class="col-md-6">
             <label class="form-label">Voornaam</label>
-            <input type="text" name="Voornaam" id="firstName" class="form-control" required />
+            <input type="text" name="Voornaam" class="form-control" required />
           </div>
           <div class="col-md-6">
             <label class="form-label">Achternaam</label>
-            <input type="text" name="Achternaam" id="lastName" class="form-control" required />
-          </div>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">E-mailadres</label>
-          <input type="email" name="E-mailadres" id="email" class="form-control" required />
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Adres</label>
-          <input type="text" name="Adres" id="address" class="form-control" required />
-        </div>
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label class="form-label">Postcode</label>
-            <input type="text" name="Postcode" id="postcode" class="form-control" required />
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Plaats</label>
-            <input type="text" name="Plaats" id="city" class="form-control" required />
+            <input type="text" name="Achternaam" class="form-control" required />
           </div>
         </div>
 
+        <div class="mb-3">
+          <label class="form-label">E-mailadres</label>
+          <input type="email" name="E-mailadres" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Adres</label>
+          <input type="text" name="Adres" class="form-control" required />
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Postcode</label>
+            <input type="text" name="Postcode" class="form-control" required />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Plaats</label>
+            <input type="text" name="Plaats" class="form-control" required />
+          </div>
+        </div>
+
+        <!-- Winkelwagen samenvatting -->
         <input type="hidden" name="Winkelwagen" id="orderSummary" />
-        <input type="hidden" name="_next" value="bedankt.html" />
+
+        <!-- Redirect naar bedankt.html -->
+        <input type="hidden" name="_next" value="https://jessicadekruijf.github.io/whimoria3/bedankt.html" />
+
+        <!-- Captcha uitschakelen -->
         <input type="hidden" name="_captcha" value="false" />
 
         <button type="submit" class="btn btn-success">Afrekenen</button>
@@ -75,7 +86,7 @@
 
   <footer class="text-center mt-5">
     © 2025 Whimoria – een collectie door Jess | Contact: <a href="mailto:hello@whimoria.com">hello@whimoria.com</a>
-    <a href="https://www.instagram.com/whimoria_" target="_blank">
+    <a href="https://www.instagram.com/whimoria_" target="_blank" rel="noopener noreferrer">
       <i class="fab fa-instagram fa-2x"></i>
     </a>
   </footer>
@@ -90,15 +101,16 @@
         document.getElementById("checkout-form").style.display = "none";
         return;
       }
+
       let totaal = 0;
       let html = "<ul class='list-group'>";
       cart.forEach((item) => {
         const subTotaal = item.price * item.quantity;
         totaal += subTotaal;
         html += `<li class="list-group-item d-flex justify-content-between align-items-center">
-                    ${item.name} × ${item.quantity}
-                    <span>€${subTotaal.toFixed(2)}</span>
-                  </li>`;
+                  ${item.name} × ${item.quantity}
+                  <span>€${subTotaal.toFixed(2)}</span>
+                </li>`;
       });
       html += `</ul><h4 class="mt-4">Totaal: €${totaal.toFixed(2)}</h4>`;
       cartDiv.innerHTML = html;
@@ -117,14 +129,10 @@
 
     function prepareOrder() {
       const summary = cart
-        .map(
-          (item) =>
-            `${item.name} × ${item.quantity} = €${(item.price * item.quantity).toFixed(2)}`
-        )
+        .map(item => `${item.name} × ${item.quantity} = €${(item.price * item.quantity).toFixed(2)}`)
         .join("\n");
       document.getElementById("orderSummary").value = summary;
-      // NIET hier localStorage legen, dat doen we in bedankt.html
-      return true; // laat het formulier normaal versturen
+      return true;
     }
 
     updateCartCount();
